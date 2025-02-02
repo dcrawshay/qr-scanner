@@ -10,6 +10,7 @@ declare class QrScanner {
     static listCameras(requestLabels?: boolean): Promise<Array<QrScanner.Camera>>;
     readonly $video: HTMLVideoElement;
     readonly $canvas: HTMLCanvasElement;
+    readonly $fullCanvas: HTMLCanvasElement;
     readonly $overlay?: HTMLDivElement;
     private readonly $codeOutlineHighlight?;
     private readonly _onDecode?;
@@ -56,13 +57,14 @@ declare class QrScanner {
         scanRegion?: QrScanner.ScanRegion | null;
         qrEngine?: Worker | BarcodeDetector | Promise<Worker | BarcodeDetector> | null;
         canvas?: HTMLCanvasElement | null;
+        fullCanvas?: HTMLCanvasElement | null;
         disallowCanvasResizing?: boolean;
         alsoTryWithoutScanRegion?: boolean;
         /** just a temporary flag until we switch entirely to the new api */
         returnDetailedScanResult?: true;
     }): Promise<QrScanner.ScanResult>;
     /** @deprecated */
-    static scanImage(imageOrFileOrBlobOrUrl: HTMLImageElement | HTMLVideoElement | HTMLCanvasElement | OffscreenCanvas | ImageBitmap | SVGImageElement | File | Blob | URL | String, scanRegion?: QrScanner.ScanRegion | null, qrEngine?: Worker | BarcodeDetector | Promise<Worker | BarcodeDetector> | null, canvas?: HTMLCanvasElement | null, disallowCanvasResizing?: boolean, alsoTryWithoutScanRegion?: boolean): Promise<string>;
+    static scanImage(imageOrFileOrBlobOrUrl: HTMLImageElement | HTMLVideoElement | HTMLCanvasElement | OffscreenCanvas | ImageBitmap | SVGImageElement | File | Blob | URL | String, scanRegion?: QrScanner.ScanRegion | null, qrEngine?: Worker | BarcodeDetector | Promise<Worker | BarcodeDetector> | null, canvas?: HTMLCanvasElement | null, fullCanvas?: HTMLCanvasElement | null, disallowCanvasResizing?: boolean, alsoTryWithoutScanRegion?: boolean): Promise<string>;
     setGrayscaleWeights(red: number, green: number, blue: number, useIntegerApproximation?: boolean): void;
     setInversionMode(inversionMode: QrScanner.InversionMode): void;
     static createQrEngine(): Promise<Worker | BarcodeDetector>;
@@ -110,6 +112,7 @@ declare namespace QrScanner {
     interface ScanResult {
         data: string;
         cornerPoints: QrScanner.Point[];
+        image: HTMLCanvasElement;
     }
 }
 declare class BarcodeDetector {
